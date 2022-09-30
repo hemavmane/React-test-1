@@ -1,39 +1,63 @@
-import React, { useEffect, useState } from "react";
-import axious from "axios";
-export function Comments() {
-  const [data, setData] = useState([]);
-  const [filteredData,setFilteredData]=useState([])
-  const [text,setText]=useState("")
-  const [but,setbut]=useState("")
-  useEffect(() => {
-    axious
-      .get("https://jsonplaceholder.typicode.com/comments")
-      .then((response) =>{
-        console.log(response.data);
-        setData([...response.data])
-        setFilteredData([...response.data])
-      } );
-  }, []);
+import React,{useState} from "react";
+import { useEffect } from "react";
+ import axios from "axios"
+export function FindId(){
+    const [post,setPost]=useState([])
+    const [btnid,setBtnId]=useState("")
+    const[filterpost,setFilteredPost]=useState([])
+    const [searchtask,setSearchTask]=useState("")
+useEffect(()=>{
+   axios.get(`https://jsonplaceholder.typicode.com/comments`)
+   .then(res=>{
+    console.log(res.data)
+    setPost([...res.data])
+    setFilteredPost([...res.data])
+   })
+},[])
 
-  useEffect(()=>{
-    const filtereddata = data.filter((comment)=>{
-      if(comment.name){
-        return comment.name.includes(text.toLowerCase())
-      }
-    });
-    setFilteredData(filtereddata)
-  },[but])
-  return (
-    <>
-    <input type="text" value={text} onChange={(e)=>setText(e.target.value)} />
-    <button onClick={()=>setbut(text)}>text</button>
-      {filteredData.map((post) => {
-        return (
-          <div key={post.id}>
-            <h1>{post.name}</h1>
-          </div>
-        );
-      })}
-    </>
-  );
+useEffect(()=>{
+  let filterdata=post.filter((Comment)=>{
+    if(Comment.name){
+      return Comment.name.includes(searchtask.toLowerCase())
+    }
+  })
+  setFilteredPost(filterdata)
+},[btnid])
+    return(
+        <>
+        
+        <div className="serach_input">
+        <input type="text"  value={searchtask}  onChange={(e)=>setSearchTask(e.target.value)} />
+         <button onClick={()=>setBtnId(searchtask)}>Add task</button>
+        </div>
+       
+        
+        {
+          filterpost.map((task)=>{
+            return(
+              <div className="name" key={task.id}>
+              <p>{task.name}</p>
+              </div>
+            )
+          })
+        }
+        </>
+    )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
